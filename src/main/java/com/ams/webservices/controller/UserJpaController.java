@@ -34,7 +34,7 @@ public class UserJpaController {
 	
 	@GetMapping("/users/{username}")
 	public Optional<User> GetUserByUsername(@PathVariable String username){
-		return userJpaRepository.findById(username);
+		return userJpaRepository.findByUsername(username);
 	}
 	
 	@PostMapping("/users")
@@ -52,7 +52,7 @@ public class UserJpaController {
 	
 	@DeleteMapping("/users/{username}")
 	public ResponseEntity<Void>  DeleteUser(@PathVariable String username){
-		userJpaRepository.deleteById(username);
+		userJpaRepository.deleteByUsername(username);
 		return ResponseEntity.noContent().build();	
 	}
 
