@@ -124,5 +124,47 @@ CREATE TABLE `ams`.`transaction_sub_category` (
     FOREIGN KEY (`category_cd`)
     REFERENCES `ams`.`transaction_category` (`category_cd`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION);   
+    
+CREATE TABLE `ams`.`transaction` (
+  `transaction_id` INT NOT NULL AUTO_INCREMENT,
+  `transaction_desc` VARCHAR(200) NOT NULL,
+  `trans_sub_cat_cd` VARCHAR(4) NOT NULL,
+  `credit_debit` VARCHAR(3) NOT NULL,
+  `transaction_ref_no` VARCHAR(45) NULL,
+  `account_cd` VARCHAR(4) NOT NULL,
+  `payment_type` VARCHAR(3) NOT NULL,
+  `transaction_doc` BLOB NULL,
+  PRIMARY KEY (`transaction_id`),
+  INDEX `trans_trans_sub_cat_fk_idx` (`trans_sub_cat_cd` ASC) VISIBLE,
+  INDEX `trans_account_fk_idx` (`account_cd` ASC) VISIBLE,
+  CONSTRAINT `trans_trans_sub_cat_fk`
+    FOREIGN KEY (`trans_sub_cat_cd`)
+    REFERENCES `ams`.`transaction_sub_category` (`trans_sub_cat_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `trans_account_fk`
+    FOREIGN KEY (`account_cd`)
+    REFERENCES `ams`.`accounts` (`account_cd`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION);    
+    
+ ALTER TABLE `ams`.`transaction` 
+ADD COLUMN `transaction_amount` DECIMAL(10,2) NOT NULL AFTER `transaction_doc`;
+
+ALTER TABLE `ams`.`transaction` 
+ADD COLUMN `transaction_date` DATETIME NOT NULL AFTER `transaction_amount`;
+
+ALTER TABLE `ams`.`transaction` 
+ADD COLUMN `created` DATETIME NOT NULL AFTER `transaction_date`,
+ADD COLUMN `last_updated` DATETIME NOT NULL AFTER `created`,
+ADD COLUMN `username` VARCHAR(45) NOT NULL AFTER `last_updated`,
+ADD INDEX `trans_user_fk_idx` (`username` ASC) VISIBLE;
+;
+ALTER TABLE `ams`.`transaction` 
+ADD CONSTRAINT `trans_user_fk`
+  FOREIGN KEY (`username`)
+  REFERENCES `ams`.`users` (`username`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
  

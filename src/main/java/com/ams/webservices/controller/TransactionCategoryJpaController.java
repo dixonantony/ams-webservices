@@ -30,13 +30,13 @@ public class TransactionCategoryJpaController {
 		return transactionCategoryJpaRepository.findAll();
 	}
 	
-	@GetMapping("/transactioncategory/{name}")
-	public Optional<TransactionCategory> GetAccountByName(@PathVariable String categoryName){
-		return transactionCategoryJpaRepository.findByCategoryName(categoryName);
+	@GetMapping("/transactioncategory/{code}")
+	public Optional<TransactionCategory> GetCategoryByCode(@PathVariable String code){
+		return transactionCategoryJpaRepository.findById(code);
 	}
 	
 	@PostMapping("/transactioncategory")
-	public ResponseEntity<Void>  CreateAccount(@RequestBody TransactionCategory transactionCategory){
+	public ResponseEntity<Void>  CreateTransactionCategory(@RequestBody TransactionCategory transactionCategory){
 		TransactionCategory categoryCreated = transactionCategoryJpaRepository.save(transactionCategory);		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(categoryCreated.getCategory_name()).toUri();
 			return ResponseEntity.created(uri).build();

@@ -19,13 +19,13 @@ public class TransactionTypeJpaController {
 	@Autowired
 	TransactionTypeJpaRepository transactionTypeJpaRepository;
 	
-	@GetMapping("/transaction_types")
-	public List<TransactionType>  GetAllFinancialYears(){
+	@GetMapping("/transactiontypes")
+	public List<TransactionType>  GetAllTransactionTypes(){
 		return transactionTypeJpaRepository.findAll();
 	}
 	
-	@GetMapping("/transaction_types/{transaction_type_cd}")
-	public Optional<TransactionType> GetFinancialYearByYear(@PathVariable String transactionTypeCd){
+	@GetMapping("/transactiontypes/{transactionTypeCd}")
+	public Optional<TransactionType> GetTransactionTypeByCode(@PathVariable String transactionTypeCd){
 		return transactionTypeJpaRepository.findById(transactionTypeCd);
 	}	
 	
