@@ -167,4 +167,15 @@ ADD CONSTRAINT `trans_user_fk`
   REFERENCES `ams`.`users` (`username`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+CREATE TABLE `ams`.`payment_type` (
+  `code` VARCHAR(3) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`code`));
+  
+  INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CSH', 'Cash');
+INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CHQ', 'Cheque');
+INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CRD', 'Card');
+INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('NBK', 'Net Banking');
+
  

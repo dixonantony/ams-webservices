@@ -26,12 +26,14 @@ public class TransactionJpaController {
 	
 	@Autowired
 	TransactionJpaRepository transactionJpaRepository;
-	
+
+		
 	@GetMapping("/transactions/start/{startDate}/end/{endDate}")
-	public List<Transaction>  GetTransactionsForAPeriod(@PathVariable @DateTimeFormat(pattern = "ddMMyyyy") Date startDate,
+	public List<Transaction>  GetTransactionsForAPeriod(
+			@PathVariable @DateTimeFormat(pattern = "ddMMyyyy") Date startDate,
 			@PathVariable @DateTimeFormat(pattern = "ddMMyyyy") Date endDate){
 		return transactionJpaRepository.findTransactionsForAPeriod(startDate, endDate);
-	}
+	}	
 	
 	@GetMapping("/transactions/{id}")
 	public Optional<Transaction> GetCategoryByCode(@PathVariable long id){
