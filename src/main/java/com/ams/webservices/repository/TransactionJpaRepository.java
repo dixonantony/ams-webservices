@@ -10,7 +10,7 @@ import com.ams.webservices.entity.Transaction;
 @Repository
 public interface TransactionJpaRepository extends JpaRepository<Transaction, Long>{
 	
-	@Query("SELECT t FROM Transaction t WHERE t.transactionDate BETWEEN ?1 and ?2")
+	@Query("SELECT t FROM Transaction t WHERE t.transactionDate BETWEEN ?1 and ?2 +1 ORDER BY t.voucherNo")
 	List<Transaction> findTransactionsForAPeriod(Date startDate,Date endDate);
 
 }

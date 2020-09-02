@@ -15,7 +15,7 @@ public interface TransactionSubCategoryReportJpaRepository extends JpaRepository
 			 + "FROM transaction_sub_category tsc,"
 			 + "transaction t "
 			 + "where t.trans_sub_cat_cd=tsc.trans_sub_cat_cd "
-			 + "AND t.transaction_date BETWEEN ?1 and ?2 "
+			 + "AND t.transaction_date BETWEEN ?1 and DATE_ADD(?2, INTERVAL 1 DAY)"
 			 + "GROUP BY tsc.trans_sub_cat_cd",
 		nativeQuery = true)
 	List<TransactionSubCategoryReport> findTransactionsSubCategoryReportForAPeriod(Date startDate,Date endDate);
@@ -26,7 +26,7 @@ public interface TransactionSubCategoryReportJpaRepository extends JpaRepository
 			 + "transaction t "
 			 + "where t.trans_sub_cat_cd=tsc.trans_sub_cat_cd "
 			 + "AND tsc.category_cd = ?1 "
-			 + "AND t.transaction_date BETWEEN ?2 and ?3 "
+			 + "AND t.transaction_date BETWEEN ?2 and DATE_ADD(?3, INTERVAL 1 DAY)"
 			 + "GROUP BY tsc.trans_sub_cat_cd",
 		nativeQuery = true)
 	List<TransactionSubCategoryReport> findTransactionsSubCategoryReportForACategory(String CategoryCode,Date startDate,Date endDate);

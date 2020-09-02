@@ -3,6 +3,9 @@ package com.ams.webservices.controller;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ams.webservices.entity.TransactionCategory;
 import com.ams.webservices.repository.TransactionCategoryJpaRepository;
+import com.ams.webservices.repository.TransactionSubCategoryJpaRepository;
 
 @CrossOrigin
 @RestController
 public class TransactionCategoryJpaController {
 	
+	
 	@Autowired
 	TransactionCategoryJpaRepository transactionCategoryJpaRepository;
+	@Autowired
+	TransactionSubCategoryJpaRepository transactionSubCategoryJpaRepository;
+	
+//	private final Logger logger = LoggerFactory.getLogger(TransactionCategoryJpaController.class);
 	
 	@GetMapping("/transactioncategory")
 	public List<TransactionCategory>  GetAllAccounts(){
@@ -56,7 +65,13 @@ public class TransactionCategoryJpaController {
 	
 	@DeleteMapping("/transactioncategory/{code}")
 	public ResponseEntity<Void>  DeleteTransactionCategory(@PathVariable String code){
-		transactionCategoryJpaRepository.deleteById(code);
+		Optional<TransactionCategory> categoryDeleted = transactionCategoryJpaRepository.findById(code);
+		if(categoryDeleted.isPresent()){
+			categoryDeleted.get().getTransactionSubCategory()
+				.forEach(transactionSubCategory -> 
+				 transactionSubCategoryJpaRepository.deleteById(transactionSubCategory.getTrans_sub_cat_cd()));
+		}
+		transactionCategoryJpaRepository.deleteById(code);		
 		return ResponseEntity.noContent().build();	
 	}
 

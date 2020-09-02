@@ -21,7 +21,7 @@ public interface TransactionReportJpaRepository extends JpaRepository<Transactio
 				 + "WHERE t.trans_sub_cat_cd = tsc.trans_sub_cat_cd "
 				 + "AND a.account_cd = t.account_cd "
 				 + "AND pt.code = t.payment_type "
-				 + "AND t.transaction_date BETWEEN ?1 and ?2",
+				 + "AND t.transaction_date BETWEEN ?1 and DATE_ADD(?2, INTERVAL 1 DAY) ORDER BY t.voucher_no",
 			nativeQuery = true)
 	List<TransactionReport> findTransactionsReportForAPeriod(Date startDate,Date endDate);
 	
@@ -37,7 +37,7 @@ public interface TransactionReportJpaRepository extends JpaRepository<Transactio
 			 + "AND a.account_cd = t.account_cd "
 			 + "AND pt.code = t.payment_type "
 			 + "AND tsc.trans_sub_cat_cd = ?1 "
-			 + "AND t.transaction_date BETWEEN ?2 and ?3",
+			 + "AND t.transaction_date BETWEEN ?2 and DATE_ADD(?3, INTERVAL 1 DAY) ORDER BY t.voucher_no",
 		nativeQuery = true)
 	 List<TransactionReport> findTransactionsReportForASubCategory(String SubCategoryCode,Date startDate,Date endDate);
 

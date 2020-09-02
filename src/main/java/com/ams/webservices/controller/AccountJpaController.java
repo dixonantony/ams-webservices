@@ -53,5 +53,17 @@ public class AccountJpaController {
 		accountJpaRepository.deleteById(code);
 		return ResponseEntity.noContent().build();	
 	}
+	
+	@PutMapping("/accounts/credit/{code}/{amount}")
+	public ResponseEntity<Void>  creditAccount(@PathVariable String code,@PathVariable double amount){
+		accountJpaRepository.accountCredit(amount, code);
+		return ResponseEntity.noContent().build();				
+	}
+	
+	@PutMapping("/accounts/debit/{code}/{amount}")
+	public ResponseEntity<Void>  debitAccount(@PathVariable String code,@PathVariable double amount){
+		accountJpaRepository.accountDebit(amount, code);
+		return ResponseEntity.noContent().build();				
+	}
 
 }

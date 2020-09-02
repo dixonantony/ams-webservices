@@ -168,6 +168,9 @@ ADD CONSTRAINT `trans_user_fk`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
   
+ALTER TABLE `ams`.`transaction` 
+ADD COLUMN `voucher_no` VARCHAR(12) NULL AFTER `username`;  
+
 CREATE TABLE `ams`.`payment_type` (
   `code` VARCHAR(3) NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
@@ -177,5 +180,106 @@ CREATE TABLE `ams`.`payment_type` (
 INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CHQ', 'Cheque');
 INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CRD', 'Card');
 INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('NBK', 'Net Banking');
+
+CREATE TABLE `appartment_type` (
+  `appart_type_cd` varchar(3) NOT NULL,
+  `square_ft` int NOT NULL,
+  `no_of_bedroom` int NOT NULL,
+  PRIMARY KEY (`appart_type_cd`)
+);
+
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('A', '100', '3');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('B', '100', '3');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('C', '100', '3');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('D', '100', '2');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('E', '100', '2');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('F', '100', '2');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('G', '100', '2');
+INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('H', '100', '2');
+
+CREATE TABLE `ams`.`appartment` (
+  `appart_cd` VARCHAR(3) NOT NULL,
+  `appart_type_cd` VARCHAR(3) NULL,
+  `floor` INT NULL,
+  PRIMARY KEY (`appart_cd`),
+  INDEX `appart_type_fk_idx` (`appart_type_cd` ASC) VISIBLE,
+  CONSTRAINT `appart_type_fk`
+    FOREIGN KEY (`appart_type_cd`)
+    REFERENCES `ams`.`appartment_type` (`appart_type_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+ INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1A', 'A', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1B', 'B', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1C', 'C', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1D', 'D', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1E', 'E', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1F', 'F', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1G', 'G', '1');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1H', 'H', '1');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2A', 'A', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2B', 'B', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2C', 'C', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2D', 'D', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2E', 'E', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2F', 'F', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2G', 'G', '2');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('2H', 'H', '2');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3A', 'A', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3B', 'B', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3C', 'C', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3D', 'D', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3E', 'E', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3F', 'F', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3G', 'G', '3');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('3H', 'H', '3');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4A', 'A', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4B', 'B', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4C', 'C', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4D', 'D', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4E', 'E', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4F', 'F', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4G', 'G', '4');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('4H', 'H', '4');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5A', 'A', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5B', 'B', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5C', 'C', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5D', 'D', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5E', 'E', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5F', 'F', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5G', 'G', '5');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('5H', 'H', '5');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6A', 'A', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6B', 'B', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6C', 'C', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6D', 'D', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6E', 'E', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6F', 'F', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6G', 'G', '6');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('6H', 'H', '6');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7A', 'A', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7B', 'B', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7C', 'C', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7D', 'D', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7E', 'E', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7F', 'F', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7G', 'G', '7');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('7H', 'H', '7');
+
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8A', 'A', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8B', 'B', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8C', 'C', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8D', 'D', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8E', 'E', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8F', 'F', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8G', 'G', '8');
+INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8H', 'H', '8');
+
 
  

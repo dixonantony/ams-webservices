@@ -56,13 +56,18 @@ public class Transaction {
 	@Column(name = "username")
 	private String username;
 	
+	@Column(name = "voucher_no")
+	private String voucherNo;
+	
+	
 	public Transaction() {
 		super();
 	}
-	
+
+
 	public Transaction(long transactionId, String transactionDesc, String transSubCategoryCd, String creditDebit,
 			String transactionRefNo, String accountCd, String paymentType, double amount, Date transactionDate,
-			Date created, Date lastUpdated, String username) {
+			Date created, Date lastUpdated, String username, String voucherNo) {
 		super();
 		this.transactionId = transactionId;
 		this.transactionDesc = transactionDesc;
@@ -76,7 +81,9 @@ public class Transaction {
 		this.created = created;
 		this.lastUpdated = lastUpdated;
 		this.username = username;
+		this.voucherNo = voucherNo;
 	}
+
 
 
 
@@ -189,5 +196,17 @@ public class Transaction {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+
+	public String getVoucherNo() {
+		return voucherNo;
+	}
+
+
+	public void setVoucherNo(String voucherNo) {
+		this.voucherNo = voucherNo;
 	}	
+	
+	
 }
