@@ -27,14 +27,17 @@ public class TransactionReport {
 	private String paymentType;
 	private Date lastUpdated;
 	private String username;
+	private String voucherNo;
 	
 	public TransactionReport() {
 		super();
 	}
 
+	
+
 	public TransactionReport(long transactionId, String transSubCategoryName, Date transactionDate, double amount,
 			String transactionDesc, String creditDebit, String transactionRefNo, String accountName, String paymentType,
-			Date lastUpdated, String username) {
+			Date lastUpdated, String username, String voucherNo) {
 		super();
 		this.transactionId = transactionId;
 		this.transSubCategoryName = transSubCategoryName;
@@ -47,7 +50,10 @@ public class TransactionReport {
 		this.paymentType = paymentType;
 		this.lastUpdated = lastUpdated;
 		this.username = username;
+		this.voucherNo = voucherNo;
 	}
+
+
 
 	public long getTransactionId() {
 		return transactionId;
@@ -135,6 +141,19 @@ public class TransactionReport {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+
+
+	public String getVoucherNo() {
+		return voucherNo;
+	}
+
+
+
+	public void setVoucherNo(String voucherNo) {
+		this.voucherNo = voucherNo;
 	}	
+	
 	
 }
