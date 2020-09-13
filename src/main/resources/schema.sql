@@ -181,23 +181,23 @@ INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CHQ', 'Cheque');
 INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('CRD', 'Card');
 INSERT INTO `ams`.`payment_type` (`code`, `Name`) VALUES ('NBK', 'Net Banking');
 
-CREATE TABLE `appartment_type` (
+CREATE TABLE `appartment_types` (
   `appart_type_cd` varchar(3) NOT NULL,
   `square_ft` int NOT NULL,
   `no_of_bedroom` int NOT NULL,
   PRIMARY KEY (`appart_type_cd`)
 );
 
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('A', '100', '3');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('B', '100', '3');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('C', '100', '3');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('D', '100', '2');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('E', '100', '2');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('F', '100', '2');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('G', '100', '2');
-INSERT INTO `ams`.`appartment_type` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('H', '100', '2');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('A', '100', '3');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('B', '100', '3');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('C', '100', '3');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('D', '100', '2');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('E', '100', '2');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('F', '100', '2');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('G', '100', '2');
+INSERT INTO `ams`.`appartment_types` (`appart_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('H', '100', '2');
 
-CREATE TABLE `ams`.`appartment` (
+CREATE TABLE `ams`.`appartments` (
   `appart_cd` VARCHAR(3) NOT NULL,
   `appart_type_cd` VARCHAR(3) NULL,
   `floor` INT NULL,
@@ -208,6 +208,14 @@ CREATE TABLE `ams`.`appartment` (
     REFERENCES `ams`.`appartment_type` (`appart_type_cd`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+    
+    ALTER TABLE `ams`.`appartments` 
+ADD CONSTRAINT `appartment_aptype_fk`
+  FOREIGN KEY (`appartment_type_cd`)
+  REFERENCES `ams`.`appartment_types` (`appartment_type_cd`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
     
  INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1A', 'A', '1');
 INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('1B', 'B', '1');
@@ -281,5 +289,169 @@ INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES (
 INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8G', 'G', '8');
 INSERT INTO `ams`.`appartment` (`appart_cd`, `appart_type_cd`, `floor`) VALUES ('8H', 'H', '8');
 
+CREATE TABLE `ams`.`roles` (
+  `role_cd` VARCHAR(4) NOT NULL,
+  `role_name` VARCHAR(45) NOT NULL,
+  `role_desc` VARCHAR(100) NULL,
+  PRIMARY KEY (`role_cd`),
+  UNIQUE INDEX `role_name_UNIQUE` (`role_name` ASC) VISIBLE);
+  
+INSERT INTO `ams`.`roles` (`role_cd`, `role_name`, `role_desc`) VALUES ('ADMN', 'admin', 'Super User');
+INSERT INTO `ams`.`roles` (`role_cd`, `role_name`, `role_desc`) VALUES ('CMBR', 'Commitee Member', 'Management commitee member');
+INSERT INTO `ams`.`roles` (`role_cd`, `role_name`, `role_desc`) VALUES ('SCTY', 'Secretary', 'Secretary');
 
- 
+ CREATE TABLE `ams`.`occupants` (
+  `occupant_id` INT NOT NULL,
+  `occupantcy_type` VARCHAR(10) NOT NULL,
+  `appartment_cd` VARCHAR(3) NOT NULL,
+  `from_dt` DATE NOT NULL,
+  `to_dt` DATE NULL,
+  `full_name` VARCHAR(100) NOT NULL,
+  `landline_no` VARCHAR(20) NULL,
+  `mobile_no` VARCHAR(20) NULL,
+  `email` VARCHAR(100) NULL,
+  `alter_email` VARCHAR(100) NULL,
+  `whatsapp_enabled` VARCHAR(1) NOT NULL,
+  PRIMARY KEY (`occupant_id`),
+  INDEX `occupant_appart_fk_idx` (`appartment_cd` ASC) VISIBLE,
+  CONSTRAINT `occupant_appart_fk`
+    FOREIGN KEY (`appartment_cd`)
+    REFERENCES `ams`.`appartments` (`appartment_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+    INSERT INTO `ams`.`appartment_types` (`appartment_type_cd`, `square_ft`, `no_of_bedroom`) VALUES ('CMN', '1', '1');
+INSERT INTO `ams`.`appartments` (`appartment_cd`, `appartment_type_cd`, `floor`) VALUES ('CMN', 'CMN', '0');
+INSERT INTO `ams`.`occupants` (`occupant_id`, `occupantcy_type`, `appartment_cd`, `from_dt`, `full_name`, `whatsapp_enabled`) VALUES ('1', 'COMMON', 'CMN', '2019-04-01', 'Common', 'N');
+ALTER TABLE `ams`.`users` 
+ADD COLUMN `occupant_id` INT NULL AFTER `last_updated`,
+ADD COLUMN `role_cd` VARCHAR(4) NULL AFTER `occupant_id`;
+
+ALTER TABLE `ams`.`users` 
+ADD INDEX `users_occupant_fk_idx` (`occupant_id` ASC) VISIBLE,
+ADD INDEX `users_role_fk_idx` (`role_cd` ASC) VISIBLE;
+;
+ALTER TABLE `ams`.`users` 
+ADD CONSTRAINT `users_occupant_fk`
+  FOREIGN KEY (`occupant_id`)
+  REFERENCES `ams`.`occupants` (`occupant_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `users_role_fk`
+  FOREIGN KEY (`role_cd`)
+  REFERENCES `ams`.`roles` (`role_cd`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  CREATE TABLE `ams`.`occupant_details` (
+  `occupant_dtl_id` INT NOT NULL,
+  `occupant_id` INT NOT NULL,
+  `full_name` VARCHAR(100) NOT NULL,
+  `relationship` VARCHAR(15) NOT NULL,
+  `dob` DATE NULL,
+  PRIMARY KEY (`occupant_dtl_id`),
+  INDEX `occupant_dtl_occu_fk_idx` (`occupant_id` ASC) VISIBLE,
+  CONSTRAINT `occupant_dtl_occu_fk`
+    FOREIGN KEY (`occupant_id`)
+    REFERENCES `ams`.`occupants` (`occupant_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+    ALTER TABLE `ams`.`occupants` 
+ADD COLUMN `permenant_address` VARCHAR(200) NULL AFTER `whatsapp_enabled`,
+ADD COLUMN `present_address` VARCHAR(200) NULL AFTER `permenant_address`;
+
+CREATE TABLE `ams`.`menus` (
+  `menu_cd` VARCHAR(4) NOT NULL,
+  `menu_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`menu_cd`));
+  
+  CREATE TABLE `ams`.`sub_menus` (
+  `sub_menu_cd` VARCHAR(4) NOT NULL,
+  `menu_cd` VARCHAR(4) NOT NULL,
+  `sub_menu_name` VARCHAR(45) NOT NULL,
+  `menu_url` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`sub_menu_cd`),
+  INDEX `submenu_menu_fk_idx` (`menu_cd` ASC) VISIBLE,
+  CONSTRAINT `submenu_menu_fk`
+    FOREIGN KEY (`menu_cd`)
+    REFERENCES `ams`.`menus` (`menu_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+    CREATE TABLE `ams`.`role_menu` (
+  `role_cd` VARCHAR(4) NOT NULL,
+  `sub_menu_cd` VARCHAR(4) NOT NULL,
+  `view` VARCHAR(1) NULL,
+  `save` VARCHAR(1) NULL,
+  `delete` VARCHAR(1) NULL,
+  PRIMARY KEY (`role_cd`, `sub_menu_cd`),
+  INDEX `role_menu_smenu_fk_idx` (`sub_menu_cd` ASC) VISIBLE,
+  CONSTRAINT `role_menu_role_fk`
+    FOREIGN KEY (`role_cd`)
+    REFERENCES `ams`.`roles` (`role_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `role_menu_smenu_fk`
+    FOREIGN KEY (`sub_menu_cd`)
+    REFERENCES `ams`.`sub_menus` (`sub_menu_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+INSERT INTO `ams`.`menus` (`menu_cd`, `menu_name`) VALUES ('ACNT', 'Accounts');
+INSERT INTO `ams`.`menus` (`menu_cd`, `menu_name`) VALUES ('STNG', 'Settings');
+INSERT INTO `ams`.`menus` (`menu_cd`, `menu_name`) VALUES ('RPTS', 'Reports');
+
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('DEXP', 'ACNT', 'Daily Expense', '/daily-expense/-1');
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('USRS', 'STNG', 'Users', '/list-users');
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('ACTS', 'STNG', 'Accounts', '/list-accounts');
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('TCTY', 'STNG', 'Transaction Category', '/list-trans-category');
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('TSUM', 'RPTS', 'Transactions Summary', 'trans-summary-report');
+INSERT INTO `ams`.`sub_menus` (`sub_menu_cd`, `menu_cd`, `sub_menu_name`, `menu_url`) VALUES ('TSMT', 'RPTS', 'Transactions Statement', 'transactions-report');
+
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'ACTS', 'Y', 'Y', 'Y');
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'DEXP', 'Y', 'Y', 'Y');
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'TCTY', 'Y', 'N', 'N');
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'TSMT', 'Y', 'N', 'Y');
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'TSUM', 'N', 'Y', 'Y');
+INSERT INTO `ams`.`role_menu` (`role_cd`, `sub_menu_cd`, `view`, `save`, `delete`) VALUES ('ADMN', 'USRS', 'Y', 'Y', 'Y');
+
+CREATE TABLE `ams`.`occupant_appartments` (
+  `occupant_id` INT NOT NULL,
+  `appartment_cd` VARCHAR(3) NOT NULL,
+  PRIMARY KEY (`occupant_id`, `appartment_cd`),
+  INDEX `occ_app_app_fk_idx` (`appartment_cd` ASC) VISIBLE,
+  CONSTRAINT `occ_app_occ_fk`
+    FOREIGN KEY (`occupant_id`)
+    REFERENCES `ams`.`occupants` (`occupant_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `occ_app_app_fk`
+    FOREIGN KEY (`appartment_cd`)
+    REFERENCES `ams`.`appartments` (`appartment_cd`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+    INSERT INTO `ams`.`occupant_appartments` (`occupant_id`, `appartment_cd`) VALUES ('1', 'CMN');
+INSERT INTO `ams`.`occupant_appartments` (`occupant_id`, `appartment_cd`) VALUES ('2', '4D');
+
+ALTER TABLE `ams`.`occupants` 
+DROP FOREIGN KEY `occupant_appart_fk`;
+ALTER TABLE `ams`.`occupants` 
+DROP COLUMN `appartment_cd`,
+DROP INDEX `occupant_appart_fk_idx` ;
+;
+
+ALTER TABLE `ams`.`occupants` 
+ADD COLUMN `identity_no` VARCHAR(20) NULL AFTER `present_address`,
+ADD COLUMN `identity_type` VARCHAR(10) NULL AFTER `identity_no`;
+
+UPDATE `ams`.`sub_menus` SET `menu_url` = 'list-accounts' WHERE (`sub_menu_cd` = 'ACTS');
+UPDATE `ams`.`sub_menus` SET `menu_url` = 'daily-expense/:expenseid' WHERE (`sub_menu_cd` = 'DEXP');
+UPDATE `ams`.`sub_menus` SET `menu_url` = 'list-trans-category' WHERE (`sub_menu_cd` = 'TCTY');
+UPDATE `ams`.`sub_menus` SET `menu_url` = 'list-users' WHERE (`sub_menu_cd` = 'USRS');
+
+ALTER TABLE `ams`.`role_menu` 
+CHANGE COLUMN `view` `enable_view` VARCHAR(1) NULL DEFAULT NULL ,
+CHANGE COLUMN `save` `enable_save` VARCHAR(1) NULL DEFAULT NULL ,
+CHANGE COLUMN `delete` `enable_delete` VARCHAR(1) NULL DEFAULT NULL ;
