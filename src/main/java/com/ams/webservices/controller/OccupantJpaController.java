@@ -30,10 +30,15 @@ public class OccupantJpaController {
 		return occupantJpaRepository.findAll();
 	}
 	
+	@GetMapping("/occupants/type/{occupantcyType}")
+	public List<Occupant> GetOccupantByType(@PathVariable String occupantcyType){
+		return occupantJpaRepository.findByOccupantcyType(occupantcyType);
+	}
+	
 	@GetMapping("/occupants/{occupantId}")
 	public Optional<Occupant> GetOccupantById(@PathVariable Long occupantId){
 		return occupantJpaRepository.findById(occupantId);
-	}
+	}	
 	
 	@PostMapping("/occupants")
 	public ResponseEntity<Void>  CreateOccupant(@RequestBody Occupant occupant){

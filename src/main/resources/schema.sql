@@ -455,3 +455,9 @@ ALTER TABLE `ams`.`role_menu`
 CHANGE COLUMN `view` `enable_view` VARCHAR(1) NULL DEFAULT NULL ,
 CHANGE COLUMN `save` `enable_save` VARCHAR(1) NULL DEFAULT NULL ,
 CHANGE COLUMN `delete` `enable_delete` VARCHAR(1) NULL DEFAULT NULL ;
+
+ALTER TABLE `ams`.`occupants` 
+CHANGE COLUMN `occupant_id` `occupant_id` INT NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `ams`.`occupant_details` 
+CHANGE COLUMN `occupant_dtl_id` `occupant_dtl_id` INT NOT NULL AUTO_INCREMENT ;

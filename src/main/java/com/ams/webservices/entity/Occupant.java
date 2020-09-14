@@ -3,8 +3,12 @@ package com.ams.webservices.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,6 +21,7 @@ public class Occupant {
 	
 	@Id
 	@Column(name="occupant_id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long occupantId;
 	
 	@Column(name="occupantcy_type")
@@ -60,7 +65,7 @@ public class Occupant {
     )
 	private List<Appartment> appartments = new ArrayList<>();
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn( name="occupant_id")
 	private List<OccupantDetails> occupantDetails = new ArrayList<>();
 	
