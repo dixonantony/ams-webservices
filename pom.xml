@@ -9,9 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ams.webservices</groupId>
-	<artifactId>ams</artifactId>
+	<artifactId>ams-aws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ams</name>
+	<packaging>war</packaging>
+	<name>ams-aws</name>
 	<description>Apartment management system</description>
 
 	<properties>
@@ -66,6 +67,11 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
